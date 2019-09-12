@@ -44,11 +44,11 @@ func (p *Progress) Inc() bool {
 		diff := time.Since(p.lastReport)
 		p.lastReport = time.Now()
 		speed := float64(p.Interval) / diff.Seconds()
-		roundSpeed := int64(speed)
+		scaledSpeed := speed
 		var mag string
 		for _, h := range MAGS {
-			if roundSpeed>>10 > 0 {
-				roundSpeed >>= 10
+			if int64(scaledSpeed)>>10 > 0 {
+				scaledSpeed = scaledSpeed / (1 << 10)
 			} else {
 				mag = h
 				break
@@ -60,10 +60,10 @@ func (p *Progress) Inc() bool {
 			hours := int(eta.Hours())
 			minutes := int(math.Mod(eta.Minutes(), 60))
 			seconds := int(math.Mod(eta.Seconds(), 60))
-			fmt.Printf("\rProgress: %7.3f%%, Speed: %3d %1sop/s, ETA: %02d:%02d:%02d",
-				progress, roundSpeed, mag, hours, minutes, seconds)
+			fmt.Printf("\rProgress: %7.3f%%, Speed: %4.1f %1sop/s, ETA: %02d:%02d:%02d",
+				progress, scaledSpeed, mag, hours, minutes, seconds)
 		} else {
-			fmt.Printf("\rSpeed: %3d %sop/s", speed, mag)
+			fmt.Printf("\rSpeed: %4.1f %sop/s", scaledSpeed, mag)
 
 		}
 		p.lock.Unlock()
