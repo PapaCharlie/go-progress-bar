@@ -60,10 +60,10 @@ func (p *Progress) Inc() bool {
 			hours := int(eta.Hours())
 			minutes := int(math.Mod(eta.Minutes(), 60))
 			seconds := int(math.Mod(eta.Seconds(), 60))
-			fmt.Printf("\rProgress: %7.3f%%, Speed: %4.1f %1sop/s, ETA: %02d:%02d:%02d",
+			fmt.Printf("\rProgress: %7.3f%%, Speed: %5.1f %1sop/s, ETA: %02d:%02d:%02d",
 				progress, scaledSpeed, mag, hours, minutes, seconds)
 		} else {
-			fmt.Printf("\rSpeed: %4.1f %sop/s", scaledSpeed, mag)
+			fmt.Printf("\rSpeed: %5.1f %sop/s", scaledSpeed, mag)
 
 		}
 		p.lock.Unlock()
