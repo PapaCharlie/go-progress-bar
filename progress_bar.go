@@ -47,8 +47,8 @@ func (p *Progress) Inc() bool {
 		scaledSpeed := speed
 		var mag string
 		for _, h := range MAGS {
-			if int64(scaledSpeed)>>10 > 0 {
-				scaledSpeed = scaledSpeed / (1 << 10)
+			if int64(scaledSpeed)/1000 > 0 {
+				scaledSpeed = scaledSpeed / 1000
 			} else {
 				mag = h
 				break
